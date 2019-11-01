@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "autom.h"
-#include "graph.h"
-#include "queue.h"
+//#include "queue.h"
 
 
 Automate* create_automate(int nb_st, char *alphab, int i_st, int* f_st, int nb_finals)
@@ -60,7 +59,8 @@ int add_transition(Automate* autom, int e1, char ch, int e2)
 void print_autom(Automate* autom)
 {
 	int i=0;
-	printf("Init state= %d \n", autom->init_st);
+	printf("Printing of the automaton ************** \n");
+	printf("Init State= %d \n", autom->init_st);
 	printf("Nb finals states= %d \n", autom->nb_finals);
 
 	printf("{ ");
@@ -74,7 +74,11 @@ void print_autom(Automate* autom)
 
 	print_Graph(autom->grph);
 
+	printf("\nPrinting of the automaton ************** \n");
+	
+
 }
+
 
 int word_in_alphabet(char* word, char* alphab)
 {
@@ -102,7 +106,7 @@ int accept(Automate* autom, char* word)
 {
 	int current_state=autom->init_st, i=0;
 
-	while(word[i] != '\0');
+	while(word[i] != '\0')
 	{
 		current_state = transit(autom->grph, current_state, word[i]);
 		if(current_state == -1)
