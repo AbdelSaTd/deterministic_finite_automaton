@@ -6,29 +6,31 @@ BDIR=build
 TDIR=tst
 SDIR=src
 
-all: test_autom test_graph test_queue
+all: build/test_autom build/test_graph build/test_queue
+
 clean:
 	rm -f $(ODIR)/*.o
 
 
-test_autom: obj/test_autom.o obj/autom.o obj/graph.o
+build/test_autom: obj/test_autom.o obj/autom.o obj/graph.o
 	$(CC) -o build/test_autom obj/test_autom.o obj/autom.o obj/graph.o $(CFLAGS)
+	
 
-obj/autom.o: src/autom.h
-	$(CC) -o obj/autom.o -c $(SDIR)/autom.c $(CFLAGS)
+obj/autom.o: src/autom.c src/autom.h
+	$(CC) -o obj/autom.o -c $(SDIR)/autom.c $(CDEBUGFLAGS)
 
-obj/test_autom.o: tst/test_autom.c src/autom.h
-	$(CC) -o obj/test_autom.o -c $(TDIR)/test_autom.c $(CFLAGS)
-
-
-
+obj/test_autom.o: tst/test_autom.c src/graph.h
+	$(CC) -o obj/test_autom.o -c $(TDIR)/test_autom.c $(CDEBUGFLAGS)
 
 
 
-test_graph: obj/test_graph.o obj/graph.o
+
+
+
+build/test_graph: obj/test_graph.o obj/graph.o
 	$(CC) -o build/test_graph obj/test_graph.o obj/graph.o $(CDEBUGFLAGS)
 
-obj/graph.o: src/graph.c
+obj/graph.o: src/graph.c src/graph.h
 	$(CC) -o obj/graph.o -c src/graph.c $(CDEBUGFLAGS)
 
 obj/test_graph.o: tst/test_graph.c src/graph.h
@@ -39,7 +41,7 @@ obj/test_graph.o: tst/test_graph.c src/graph.h
 
 
 ##
-test_queue: $(ODIR)/test_queue.o $(ODIR)/queue.o
+build/test_queue: $(ODIR)/test_queue.o $(ODIR)/queue.o
 	$(CC) -o build/test_queue obj/test_queue.o obj/queue.o $(CDEBUGFLAGS)
 
 $(ODIR)/queue.o: src/queue.c
